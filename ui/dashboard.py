@@ -1,7 +1,6 @@
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
-import sys
 
 class Dashboard(QMainWindow):
     def __init__(self):
@@ -14,23 +13,23 @@ class Dashboard(QMainWindow):
 
         label = QLabel("Welcome to Your Dashboard")
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
         layout.addWidget(label)
 
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 
         self.dashboard_toolbar()
-
+    
     def dashboard_toolbar(self):
         toolbar = QToolBar("Dashboard Toolbar")
         toolbar.setMovable(False)
-        toolbar.setIconSize(QSize(80, 80))
-        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, toolbar)
+        self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, toolbar)
 
         container = QWidget()
-        h_layout = QHBoxLayout()
-        h_layout.setSpacing(80)
-        container.setLayout(h_layout)
+        c_layout = QVBoxLayout()
+        c_layout.setSpacing(40)
+        container.setLayout(c_layout)
 
         # Each button has a name, icon, and a callback function
         buttons = [
@@ -45,13 +44,13 @@ class Dashboard(QMainWindow):
             btn = QToolButton()
             btn.setText(name)
             btn.setIcon(QIcon(image_path))
-            btn.setIconSize(QSize(80, 80))
+            btn.setIconSize(QSize(50, 50))
             btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
             btn.setAutoRaise(True)
             btn.clicked.connect(func)
-            h_layout.addWidget(btn)
+            c_layout.addWidget(btn)
 
-        h_layout.addStretch()
+        c_layout.addStretch()
         toolbar.addWidget(container)
 
     # Example functions
