@@ -15,7 +15,7 @@ class SectionBox(QGroupBox):
 
 class DashboardView(QMainWindow):
 
-    # Signals (Controller will connect to these)
+    # Creates Signals 
     home_clicked = pyqtSignal()
     teams_clicked = pyqtSignal()
     outlook_clicked = pyqtSignal()
@@ -58,17 +58,23 @@ class DashboardView(QMainWindow):
         self.assignment_section.add_widget(self.assignment_label)
 
         self.calendar_section = SectionBox("Calendar")
-        self.calendar_label = QLabel()
-        self.calendar_section.add_widget(self.calendar_label)
+        self.calendar = QCalendarWidget()
+        self.calendar.setGridVisible(True)
+        self.calendar_section.add_widget(self.calendar)
 
         self.notification_section = SectionBox("Notifications")
         self.notification_label = QLabel()
         self.notification_section.add_widget(self.notification_label)
 
-        layout.addWidget(self.gpa_section, 0, 0)
-        layout.addWidget(self.assignment_section, 0, 1)
-        layout.addWidget(self.calendar_section, 1, 0)
-        layout.addWidget(self.notification_section, 1, 1)
+        for widget in [self.gpa_section,self.assignment_section,self.calendar_section,self.notification_section]:
+            widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+            layout.addWidget(widget)
+        
+        
+        #layout.addWidget(self.gpa_section, 0, 0)
+        #layout.addWidget(self.assignment_section, 0, 1)
+        #layout.addWidget(self.calendar_section, 1, 0)
+        #layout.addWidget(self.notification_section, 1, 1)
 
         return group
 
@@ -81,6 +87,7 @@ class DashboardView(QMainWindow):
         container.setLayout(layout)
         layout.setSpacing(40)
 
+        # User icon created beforehand due to unique sizing
         user_icon = QToolButton()
         user_icon.setIcon(QIcon("resources/images/usericon.png"))
         user_icon.setText("Bennett Steg")
@@ -103,13 +110,15 @@ class DashboardView(QMainWindow):
             btn.setIconSize(QSize(40,40))
             btn.setAutoRaise(True)
             btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+            # Emits signal for controller
             btn.clicked.connect(signal.emit)
             layout.addWidget(btn)
 
         layout.addStretch()
         toolbar.addWidget(container)
 
-        return toolbar
+        return toolbar    
+
 
     # Methods Controller will call
     def update_gpa(self, value):
@@ -119,7 +128,7 @@ class DashboardView(QMainWindow):
         self.assignment_label.setText(f"{value} assignments due")
 
     def update_calendar(self, event):
-        self.calendar_label.setText(f"Next Event: {event}")
+        pass
 
     def update_notifications(self, value):
         self.notification_label.setText(f"{value} unread notifications")
