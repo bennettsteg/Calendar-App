@@ -1,7 +1,7 @@
 # main.py
 
 import sys
-from PyQt6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
 from view.dashboard_view import DashboardView
 from model.dashboard_model import DashboardModel
 from controller.dashboard_controller import DashboardController

@@ -1,6 +1,6 @@
-from PyQt6.QtCore import *
-from PyQt6.QtGui import *
-from PyQt6.QtWidgets import *
+from PySide6.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
 import os
 
 class SectionBox(QGroupBox):
@@ -16,11 +16,11 @@ class SectionBox(QGroupBox):
 class DashboardView(QMainWindow):
 
     # Creates Signals 
-    home_clicked = pyqtSignal()
-    teams_clicked = pyqtSignal()
-    outlook_clicked = pyqtSignal()
-    blackboard_clicked = pyqtSignal()
-    calendar_clicked = pyqtSignal()
+    home_clicked = Signal()
+    teams_clicked = Signal()
+    outlook_clicked = Signal()
+    blackboard_clicked = Signal()
+    calendar_clicked = Signal()
 
     def __init__(self):
         super().__init__()
@@ -68,13 +68,10 @@ class DashboardView(QMainWindow):
 
         for widget in [self.gpa_section,self.assignment_section,self.calendar_section,self.notification_section]:
             widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-            layout.addWidget(widget)
-        
-        
-        #layout.addWidget(self.gpa_section, 0, 0)
-        #layout.addWidget(self.assignment_section, 0, 1)
-        #layout.addWidget(self.calendar_section, 1, 0)
-        #layout.addWidget(self.notification_section, 1, 1)
+        layout.addWidget(self.gpa_section, 0, 0)
+        layout.addWidget(self.assignment_section, 0, 1)
+        layout.addWidget(self.calendar_section, 1, 0)
+        layout.addWidget(self.notification_section, 1, 1)
 
         return group
 
