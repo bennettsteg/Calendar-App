@@ -3,6 +3,7 @@ from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 import os
 
+
 class SectionBox(QGroupBox):
     def __init__(self, title):
         super().__init__(title)
@@ -13,15 +14,7 @@ class SectionBox(QGroupBox):
         self.layout.addWidget(widget)
 
 
-class DashboardView(QMainWindow):
-
-    # Creates Signals 
-    home_clicked = Signal()
-    teams_clicked = Signal()
-    outlook_clicked = Signal()
-    blackboard_clicked = Signal()
-    calendar_clicked = Signal()
-
+class Student_Dashboard(QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -44,37 +37,7 @@ class DashboardView(QMainWindow):
 
         self.addToolBar(Qt.ToolBarArea.LeftToolBarArea,self.create_toolbar())
 
-    def create_student_overview(self):
-        group = QGroupBox("Student Overview")
-        layout = QGridLayout()
-        group.setLayout(layout)
-
-        self.gpa_section = SectionBox("GPA")
-        self.gpa_label = QLabel()
-        self.gpa_section.add_widget(self.gpa_label)
-
-        self.assignment_section = SectionBox("Assignments")
-        self.assignment_label = QLabel()
-        self.assignment_section.add_widget(self.assignment_label)
-
-        self.calendar_section = SectionBox("Calendar")
-        self.calendar = QCalendarWidget()
-        self.calendar.setGridVisible(True)
-        self.calendar_section.add_widget(self.calendar)
-
-        self.notification_section = SectionBox("Notifications")
-        self.notification_label = QLabel()
-        self.notification_section.add_widget(self.notification_label)
-
-        for widget in [self.gpa_section,self.assignment_section,self.calendar_section,self.notification_section]:
-            widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        layout.addWidget(self.gpa_section, 0, 0)
-        layout.addWidget(self.assignment_section, 0, 1)
-        layout.addWidget(self.calendar_section, 1, 0)
-        layout.addWidget(self.notification_section, 1, 1)
-
-        return group
-
+    
     def create_toolbar(self):
         toolbar = QToolBar("Dashboard Toolbar")
         toolbar.setMovable(False)
@@ -108,24 +71,67 @@ class DashboardView(QMainWindow):
             btn.setAutoRaise(True)
             btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
             # Emits signal for controller
-            btn.clicked.connect(signal.emit)
+            btn.clicked.connect(signal)
             layout.addWidget(btn)
 
         layout.addStretch()
         toolbar.addWidget(container)
 
-        return toolbar    
+        return toolbar 
 
-
-    # Methods Controller will call
-    def update_gpa(self, value):
-        self.gpa_label.setText(f"Current GPA: {value}")
-
-    def update_assignments(self, value):
-        self.assignment_label.setText(f"{value} assignments due")
-
-    def update_calendar(self, event):
+    def home_clicked(self):
+        pass
+    def teams_clicked(self):
+        pass
+    def outlook_clicked(self):
+        pass
+    def blackboard_clicked(self):
+        pass
+    def calendar_clicked(self):
         pass
 
-    def update_notifications(self, value):
-        self.notification_label.setText(f"{value} unread notifications")
+    def create_student_overview(self):
+        group = QGroupBox("Student Overview")
+        layout = QGridLayout()
+        group.setLayout(layout)
+
+        self.gpa_section = SectionBox("GPA")
+        self.gpa_label = QLabel()
+        self.gpa_section.add_widget(self.gpa_label)
+
+        self.assignment_section = SectionBox("Assignments")
+        self.assignment_label = QLabel()
+        self.assignment_section.add_widget(self.assignment_label)
+
+        self.calendar_section = SectionBox("Calendar")
+        self.calendar = DashboardCalendar()
+        self.calendar_section.add_widget(self.calendar)
+
+        self.notification_section = SectionBox("Notifications")
+        self.notification_label = QLabel()
+        self.notification_section.add_widget(self.notification_label)
+
+        # Ensure all widgets are evenly sized 
+        for widget in [self.gpa_section,self.assignment_section,self.calendar_section,self.notification_section]:
+            widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        layout.addWidget(self.gpa_section, 0, 0)
+        layout.addWidget(self.assignment_section, 0, 1)
+        layout.addWidget(self.calendar_section, 1, 0)
+        layout.addWidget(self.notification_section, 1, 1)
+
+        return group
+
+class DashboardCalendar(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        layout = QVBoxLayout(self)
+
+        self.calendar = QCalendarWidget()
+        self.calendar.setGridVisible(True)
+        #self.calendar.clicked.connect(self.date_clicked.emit)
+
+        layout.addWidget(self.calendar)
+
+    def show_message(self, date, text):
+        QMessageBox.information(self, f"Note for {date.toString('yyyy-MM-dd')}", text)
