@@ -2,12 +2,12 @@
 
 import sys
 from PySide6.QtWidgets import QApplication
-from dashboard.dashboard import Student_Dashboard
+from ui.dashboard import Dashboard
 
 def main():
     app = QApplication(sys.argv)
 
-    main_window = Student_Dashboard()
+    main_window = Dashboard()
     main_window.show()
 
     sys.exit(app.exec())

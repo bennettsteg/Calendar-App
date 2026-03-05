@@ -14,15 +14,12 @@ class SectionBox(QGroupBox):
         self.layout.addWidget(widget)
 
 
-class Student_Dashboard(QMainWindow):
+class HomePage(QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.setStyleSheet(""" QGroupBox { font-size: 16px; font-weight: bold; } """)
-
-        self.setWindowTitle("MIS Student Dashboard")
-        self.showMaximized()
-
+        
         self.setup_ui()
 
     def setup_ui(self):
@@ -34,61 +31,6 @@ class Student_Dashboard(QMainWindow):
 
         self.student_overview = self.create_student_overview()
         self.central_layout.addWidget(self.student_overview)
-
-        self.addToolBar(Qt.ToolBarArea.LeftToolBarArea,self.create_toolbar())
-
-    
-    def create_toolbar(self):
-        toolbar = QToolBar("Dashboard Toolbar")
-        toolbar.setMovable(False)
-
-        container = QWidget()
-        layout = QVBoxLayout()
-        container.setLayout(layout)
-        layout.setSpacing(40)
-
-        # User icon created beforehand due to unique sizing
-        user_icon = QToolButton()
-        user_icon.setIcon(QIcon("resources/images/usericon.png"))
-        user_icon.setText("Bennett Steg")
-        user_icon.setIconSize(QSize(150, 150))
-        user_icon.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
-        layout.addWidget(user_icon)
-
-        buttons = [
-            ("Home","resources/images/homebutton.png", self.home_clicked),
-            ("Teams", "resources/images/teams.png", self.teams_clicked),
-            ("Outlook", "resources/images/outlook.png", self.outlook_clicked),
-            ("Blackboard", "resources/images/blackboard.png", self.blackboard_clicked),
-            ("Calendar", "resources/images/calendar.png", self.calendar_clicked)
-        ]
-
-        for name, png_path, signal in buttons:
-            btn = QToolButton()
-            btn.setText(name)
-            btn.setIcon(QIcon(png_path))
-            btn.setIconSize(QSize(40,40))
-            btn.setAutoRaise(True)
-            btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-            # Emits signal for controller
-            btn.clicked.connect(signal)
-            layout.addWidget(btn)
-
-        layout.addStretch()
-        toolbar.addWidget(container)
-
-        return toolbar 
-
-    def home_clicked(self):
-        pass
-    def teams_clicked(self):
-        pass
-    def outlook_clicked(self):
-        pass
-    def blackboard_clicked(self):
-        pass
-    def calendar_clicked(self):
-        pass
 
     def create_student_overview(self):
         group = QGroupBox("Student Overview")
